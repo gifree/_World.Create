@@ -5,7 +5,7 @@ public interface IEventReceiver
     /// 接收是被动接收，被别人传参执行功能
     /// </summary>
     /// <param name="en"></param>
-    void OnEventReceiver(EventNode en);
+    void OnEventReceiver(IEventNode eventNode);
 }
 
 public interface IEventDispatcher
@@ -15,7 +15,7 @@ public interface IEventDispatcher
     /// </summary>
     /// <param name="et"></param>
     /// <param name="en"></param>
-    void OnEventDispatch(EventNode en);
+    void OnEventDispatch(IEventNode eventNode);
 }
 
 
@@ -25,7 +25,7 @@ public interface IMutiEventReceiver
     /// 接收是被动接收，被别人传参执行功能
     /// </summary>
     /// <param name="en"></param>
-    void OnEventReceiver(RoleNumber number, EventNode en);
+    void OnEventReceiver(RoleNumber number, IEventNode eventNode);
 }
 
 public interface IMutiEventDispatcher
@@ -35,6 +35,8 @@ public interface IMutiEventDispatcher
     /// </summary>
     /// <param name="et"></param>
     /// <param name="en"></param>
-    void OnEventDispatch(RoleNumber number, EventNode en);
+    void OnEventDispatch(RoleNumber number, IEventNode eventNode);
 }
+
+
 

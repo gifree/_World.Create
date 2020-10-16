@@ -15,7 +15,7 @@ public class RoleObserver : MonoBehaviour, IEventReceiver, IEventDispatcher
     private IRoleMgr _roleMgr;
     private IRoleEventReceiver _roleEventReceiver;
 
-    protected RoleEventNode roleEventNode;
+    protected IRoleEventNode @event;
 
     public RoleEventNodeType EventType = RoleEventNodeType.Default;
 
@@ -66,8 +66,8 @@ public class RoleObserver : MonoBehaviour, IEventReceiver, IEventDispatcher
     /// <param name="type">模块类型</param>
     protected virtual void UnRegister() => _roleEventReceiver?.UnRegister(EventType);
 
-    public virtual void OnEventReceiver(EventNode node) { }
-    public virtual void OnEventDispatch(EventNode node) { }
+    public virtual void OnEventReceiver(IEventNode @event) { }
+    public virtual void OnEventDispatch(IEventNode @event) { }
 }
 
 // near feeling.

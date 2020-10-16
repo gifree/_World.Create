@@ -92,22 +92,22 @@ public class RoleMgr : Singleton<RoleMgr>, IRoleMgr, IEventDispatcher, IEventRec
     /// 负责分派内容到具体事件
     /// </summary>
     /// <param name="node">事件节点</param>
-    public void OnEventDispatch(EventNode node)
+    public void OnEventDispatch(IEventNode @event)
     {
         try
         {
-            if (_receivers.TryGetValue((node as RoleEventNode).NodeType, out var receiver))
-                receiver?.OnEventReceiver(node);
+            if (_receivers.TryGetValue((@event as IRoleEventNode).NodeType, out var receiver))
+                receiver?.OnEventReceiver(@event);
         }
-        catch { Debug.Log($"{node} as {typeof(RoleEventNode).Name} equals null, check it type!"); }
+        catch { Debug.Log($"{@event} as {typeof(IRoleEventNode).Name} equals null, check it type!"); }
     }
     /// <summary>
     /// 负责接收外部传来的事件内容
     /// </summary>
     /// <param name="node">事件节点</param>
-    public void OnEventReceiver(EventNode node)
+    public void OnEventReceiver(IEventNode @event)
     {
-        OnEventDispatch(node);
+        OnEventDispatch(@event);
     }
 
     /*sub class register or unregister event callback entrance.*/

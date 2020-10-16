@@ -96,15 +96,15 @@ public class MutiRoleMgr : Singleton<MutiRoleMgr>, IMutiRoleMgr, IMutiEventDispa
     /// 负责分派内容到具体事件
     /// </summary>
     /// <param name="node">事件节点</param>
-    public void OnEventDispatch(RoleNumber number, EventNode node)
+    public void OnEventDispatch(RoleNumber number, IEventNode @event)
     {
         try
         {
             if (_receivers.TryGetValue(number, out var receivers))
             {
                 IEventReceiver receiver = default;
-                if ((bool)receivers?.TryGetValue((node as RoleEventNode).NodeType, out receiver))
-                    receiver?.OnEventReceiver(node);
+                if ((bool)receivers?.TryGetValue((@event as IRoleEventNode).NodeType, out receiver))
+                    receiver?.OnEventReceiver(@event);
             }
         }
         catch(Exception e) { Debug.Log(e.Message); }
@@ -113,9 +113,9 @@ public class MutiRoleMgr : Singleton<MutiRoleMgr>, IMutiRoleMgr, IMutiEventDispa
     /// 负责接收外部传来的事件内容
     /// </summary>
     /// <param name="node">事件节点</param>
-    public void OnEventReceiver(RoleNumber number, EventNode node)
+    public void OnEventReceiver(RoleNumber number, IEventNode @event)
     {
-        OnEventDispatch(number, node);
+        OnEventDispatch(number, @event);
     }
 
     /*sub class register or unregister event callback entrance.*/

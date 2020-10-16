@@ -69,7 +69,7 @@ public class RoleData : RoleObserver, IWhileChangeCharacterInfoValue
 
     public void UpdTask() => OnRoleDataValueChange(_characterInfo);
 
-    public override void OnEventReceiver(EventNode node)
+    public override void OnEventReceiver(IEventNode @event)
     {
         
     }
@@ -78,16 +78,21 @@ public class RoleData : RoleObserver, IWhileChangeCharacterInfoValue
     {
         _characterInfo.RegisterTask(new WhileUpdCharacterInfoValue(this));
 
-        var b1 = new BuffBase("1", 10, true, BuffType.Atk);
-        var b2 = new BuffBase("1", .2f, false, BuffType.Atk);
+        var b1 = new BuffInfo("1", 10, true, BuffType.Atk);
+        var b2 = new BuffInfo("1", .2f, false, BuffType.Atk);
 
         BuffMgr.Instance.AddBuff(b1);
         BuffMgr.Instance.AddBuff(b2);
 
         UpdAtkBasic(100);
 
-        b1.LifeOver();
-        b2.LifeOver();
+        b1.Start = true;
+        b2.Start = true;
+
+       
+
+        b1.Over = true;
+        b2.Over = true;
         //UpdStrengthBasic(100);
         //UpdPowerBasic(100);
     }
@@ -110,6 +115,7 @@ public class RoleData : RoleObserver, IWhileChangeCharacterInfoValue
         // 一次循环，固定数值直接加，倍率数值最后再乘
         foreach(var buff in buffList)
         {
+            if (!buff.Enable) continue;
             if (buff.FixNumber)
                 atk += buff.Value;
             else

@@ -1,4 +1,6 @@
-﻿namespace _World.Interface
+﻿using _World.Create;
+
+namespace _World.Interface
 {
     public interface IWorldMgr
     {

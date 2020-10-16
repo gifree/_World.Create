@@ -204,7 +204,7 @@ namespace _World.Create
         /// <param name="audio">player</param>
         /// <param name="clips">clips</param>
         /// <param name="repeat">repeat mode</param>
-        public void PlayList(AudioSource audio, ClipList clips, bool repeat = false)
+        public void PlayList(AudioSource audio, ClipListMgr clipLstMgr, bool repeat = false)
         {
             // pass null instance
             if (audio == null) { Debug.Log("Refuse null instace or create AudioSource by 'new'."); return; }
@@ -221,19 +221,19 @@ namespace _World.Create
             _node = new ListenerNode((int)InternalEvents.Listener_Players_AudioPlayer_PlayList,
                 new Action(
                     () =>{
-                        if (clips != null && clips.Clips.Count > 0)
+                        if (clipLstMgr != null && clipLstMgr.Clips.Count > 0)
                         {
                             if (!audio.isPlaying)
                             {
                                 if (trail)
                                 {
-                                    Administrators.Instance.Mgr<Listeners>().Remove(_node);
+                                    _node.Shut();
                                     Debug.Log(string.Format("Remove listener task:{0}", _node));
                                     return;
                                 }
 
-                                Play(audio, clips.Current);
-                                trail = clips.Next();
+                                Play(audio, clipLstMgr.Current);
+                                trail = clipLstMgr.Next();
                                 // repeat task from first to end.
                                 if (trail && repeat)
                                     trail = false;
@@ -241,8 +241,8 @@ namespace _World.Create
                         }
                         else
                         {
-                            Administrators.Instance.Mgr<Listeners>().Remove(_node);
-                            Debug.Log(string.Format("Remove uninstance listener task:{0}", _node));
+                            _node.Shut();
+                            Debug.Log(string.Format("Remove listener task:{0}", _node));
                         }
                     }
                     ));
@@ -280,17 +280,24 @@ namespace _World.Create
     /// Des:
     ///     Assist audioplayer play clips;
     /// </summary>
-    public class ClipList
+    public class ClipListMgr
     {
         private List<AudioClip> _clips;
         private int _index = 0;
 
-        public ClipList(List<AudioClip> lst) => _clips = lst;
-
+        public ClipListMgr(List<AudioClip> lst) => _clips = lst;
+        /// <summary>
+        /// clip source.
+        /// </summary>
         public List<AudioClip> Clips { get => _clips; }
-
+        /// <summary>
+        /// return currrnt clip.
+        /// </summary>
         public AudioClip Current { get => _clips[_index]; }
-
+        /// <summary>
+        /// set next clip.
+        /// </summary>
+        /// <returns></returns>
         public bool Next() => (_index = (_index + 1) % Clips.Count) == 0;
     }
 

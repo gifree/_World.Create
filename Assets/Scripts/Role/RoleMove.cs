@@ -7,7 +7,7 @@ public class RoleMove : RoleObserver
     protected override void OnInit()
     {
         base.OnInit();
-        roleEventNode = new RoleEventNode(RoleEventNodeType.Move);
+        @event = new RoleEventNode(RoleEventNodeType.Move);
         Register(this);
         Register(this as IEventReceiver);
     }
@@ -20,13 +20,13 @@ public class RoleMove : RoleObserver
     private void Start()
     {
         List<object> data = new List<object> { "play", "move" };
-        roleEventNode.Save(RoleEventDataType.String, data);
-        RoleMgr.Instance.OnEventReceiver(roleEventNode);
+        @event.Save(RoleEventDataType.String, data);
+        RoleMgr.Instance.OnEventReceiver(@event);
     }
 
-    public override void OnEventReceiver(EventNode node)
+    public override void OnEventReceiver(IEventNode @event)
     {
-        var lst = (node as RoleEventNode).Data;
+        var lst = (@event as RoleEventNode).Data;
         Debug.Log($"{lst[0]}  {lst[1]}");
     }
 

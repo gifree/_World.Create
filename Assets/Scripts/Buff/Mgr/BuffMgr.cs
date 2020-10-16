@@ -6,13 +6,13 @@ using System.Collections.Generic;
 /// </summary>
 public class BuffMgr : Singleton<BuffMgr>
 {
-    private Dictionary<BuffType, List<BuffBase>> _buffDict;
+    private Dictionary<BuffType, List<BuffInfo>> _buffDict;
     private Dictionary<BuffType, Action> _updDict;
     private IWhileChangeCharacterInfoValue _iWhileChangeValue;
 
     public BuffMgr()
     {
-        _buffDict = new Dictionary<BuffType, List<BuffBase>>();
+        _buffDict = new Dictionary<BuffType, List<BuffInfo>>();
         _updDict = new Dictionary<BuffType, Action>();
     }
 
@@ -29,7 +29,7 @@ public class BuffMgr : Singleton<BuffMgr>
     /// buff发生改变时来触发
     /// </summary>
     /// <param name="buff">buff</param>
-    public void StartAutoUpdTask(BuffBase buff)
+    public void StartAutoUpdTask(BuffInfo buff)
     {
         if (buff != null && _updDict.TryGetValue(buff.BuffType, out
              var action))
@@ -43,13 +43,24 @@ public class BuffMgr : Singleton<BuffMgr>
     /// buff的外部添加函数
     /// </summary>
     /// <param name="buff"></param>
-    public void AddBuff(BuffBase buff)
+    public void AddBuff(BuffInfo buff)
     {
         if (buff == null) return;
         _buffDict.TryGetValue(buff.BuffType, out var lst);
-        lst = lst ?? (_buffDict[buff.BuffType] = new List<BuffBase>());
+        lst = lst ?? (_buffDict[buff.BuffType] = new List<BuffInfo>());
         lst.Add(buff);
-        buff.Belongs = lst;
+    }
+
+    /// <summary>
+    /// buff的外部移除函数
+    /// </summary>
+    /// <param name="buff"></param>
+    public void RemoveBuff(BuffInfo buff)
+    {
+        if (buff == null) return;
+        _buffDict.TryGetValue(buff.BuffType, out var lst);
+        if (lst != null && lst.Contains(buff))
+            lst.Remove(buff);
     }
 
     /// <summary>
@@ -57,6 +68,6 @@ public class BuffMgr : Singleton<BuffMgr>
     /// </summary>
     /// <param name="type">类型</param>
     /// <param name="lst">buff列表</param>
-    public void BuffList(BuffType type, out List<BuffBase> lst) => _buffDict.TryGetValue(type, out lst);
+    public void BuffList(BuffType type, out List<BuffInfo> lst) => _buffDict.TryGetValue(type, out lst);
 
 }

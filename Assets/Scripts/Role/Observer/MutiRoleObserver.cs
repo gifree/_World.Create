@@ -64,8 +64,8 @@ public class MutiRoleObserver : MonoBehaviour, IEventReceiver, IEventDispatcher
     /// <param name="type">模块类型</param>
     protected virtual void UnRegister(RoleEventNodeType type) => _mutiRoleEventReceiver?.UnRegister(type, RoleNumber);
 
-    public virtual void OnEventReceiver(EventNode node) { }
-    public virtual void OnEventDispatch(EventNode node) { }
+    public virtual void OnEventReceiver(IEventNode @event) { }
+    public virtual void OnEventDispatch(IEventNode @event) { }
 
 }
 
