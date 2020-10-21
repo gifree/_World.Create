@@ -137,11 +137,9 @@ namespace _World.Tools
 
     public class PoolsMgr
     {
-        private static Dictionary<int, object> _poolsDict;
+        private static readonly Dictionary<int, object> _poolsDict = new Dictionary<int, object>();
 
-        private PoolsMgr() {
-            _poolsDict = new Dictionary<int, object>();
-        }
+        private PoolsMgr() { }
 
         /// <summary>
         /// Generate a new pool.
@@ -152,7 +150,7 @@ namespace _World.Tools
         /// <param name="max">max count</param>
         public static Pools<T> GenPool<T>(int id, string name, int max)
         {
-            if(_poolsDict.ContainsKey(id))
+            if (_poolsDict.ContainsKey(id))
             {
                 Debug.Log("Pool with this id already exist.");
                 return default;
@@ -160,7 +158,6 @@ namespace _World.Tools
             var pool = new Pools<T>(id, name, max);
             if (pool != null)
                 _poolsDict.Add(id, pool);
-
             return pool;
         }
 

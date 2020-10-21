@@ -13,9 +13,9 @@ public interface IRoleEventReceiver
 /// </summary>
 public interface IRoleMgr
 {
-    void Register<T>(T t, bool replace = false) where T : RoleObserver;
+    void Register<T>(T t, bool replace = false) where T : class;
     void UnRegister<T>();
-    T Mgr<T>() where T : RoleObserver;
+    T Mgr<T>() where T : class;
 }
 
 /// <summary>
@@ -23,9 +23,9 @@ public interface IRoleMgr
 /// </summary>
 public interface IMutiRoleMgr
 {
-    void Register<T>(RoleNumber number, T t, bool replace = false) where T : MutiRoleObserver;
+    void Register<T>(RoleNumber number, T t, bool replace = false) where T : class;
     void UnRegister<T>(RoleNumber number);
-    T Mgr<T>(RoleNumber number) where T : MutiRoleObserver;
+    T Mgr<T>(RoleNumber number) where T : class;
 }
 
 /// <summary>

@@ -55,14 +55,14 @@ namespace _World.Create
         /// <param name="type">mgr type</param>
         /// <param name="t">mgr</param>
         /// <returns></returns>
-        public Administrators Register<T>(string type, T t) where T : World
+        public Administrators Register<T>(string type, T t) where T : class
         {
             try
             {
-                if (!_dictMgr.ContainsKey(type) && t != null)
+                if (!_dictMgr.ContainsKey(type) && t != null && (t as IWorldMgr) != null)
                 {
-                    _dictMgr.Add(type, t);
-                    _listComMgr.Add(t);
+                    _dictMgr.Add(type, t as World);
+                    _listComMgr.Add(t as IWorldMgr);
                 }
             }
             catch (Exception e)
@@ -109,7 +109,7 @@ namespace _World.Create
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T Mgr<T>() where T : World
+        public T Mgr<T>() where T : class
         {
             _dictMgr.TryGetValue(typeof(T).Name, out var value);
             return value as T;

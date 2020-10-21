@@ -41,19 +41,21 @@ public class MutiRoleMgr : Singleton<MutiRoleMgr>, IMutiRoleMgr, IMutiEventDispa
     /// <typeparam name="T">模块类型</typeparam>
     /// <param name="t">模块实例</param>
     /// <param name="replace"></param>
-    public void Register<T>(RoleNumber number, T t, bool replace = false) where T : MutiRoleObserver
+    public void Register<T>(RoleNumber number, T t, bool replace = false) where T : class
     {
         try
         {
             var key = typeof(T).Name;
+            if (t == null) return;
+
             _observers.TryGetValue(number, out var roles);
             roles = roles ?? (_observers[number] = new Dictionary<string, MutiRoleObserver>());
             if (roles.ContainsKey(key) && replace)
             {
-                roles[key] = t;
+                roles[key] = t as MutiRoleObserver;
                 return;
             }
-            roles.Add(key, t);
+            roles.Add(key, t as MutiRoleObserver);
         }
         catch (Exception e) { Debug.Log(e.Message); }
     }
@@ -77,7 +79,7 @@ public class MutiRoleMgr : Singleton<MutiRoleMgr>, IMutiRoleMgr, IMutiEventDispa
     /// </summary>
     /// <typeparam name="T">模块类型</typeparam>
     /// <returns></returns>
-    public T Mgr<T>(RoleNumber number) where T : MutiRoleObserver
+    public T Mgr<T>(RoleNumber number) where T : class
     {
 
         MutiRoleObserver observer = default;

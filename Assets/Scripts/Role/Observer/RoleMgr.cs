@@ -41,18 +41,18 @@ public class RoleMgr : Singleton<RoleMgr>, IRoleMgr, IEventDispatcher, IEventRec
     /// <typeparam name="T">模块类型</typeparam>
     /// <param name="t">模块实例</param>
     /// <param name="replace"></param>
-    public void Register<T>(T t, bool replace = false) where T : RoleObserver
+    public void Register<T>(T t, bool replace = false) where T : class
     {
         try
         {
             var key = typeof(T).Name;
-            if ((bool)_observers?.ContainsKey(key))
+            if ((bool)_observers?.ContainsKey(key) && t != null)
             {
                 if (replace)
-                    _observers[key] = t;
+                    _observers[key] = t as RoleObserver;
                 return;
             }
-            _observers?.Add(key, t);
+            _observers?.Add(key, t as RoleObserver);
         }
         catch (Exception e) { Debug.Log(e.Message); }
     }
@@ -75,7 +75,7 @@ public class RoleMgr : Singleton<RoleMgr>, IRoleMgr, IEventDispatcher, IEventRec
     /// </summary>
     /// <typeparam name="T">模块类型</typeparam>
     /// <returns></returns>
-    public T Mgr<T>() where T : RoleObserver
+    public T Mgr<T>() where T : class
     {
         RoleObserver observer = default;
         try
