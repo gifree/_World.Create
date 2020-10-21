@@ -1,6 +1,15 @@
 # _World.Create
 one game framework design thought, include a game with in designing.
 
+# 2020.10.21
+task progress:  
+frame:  
+  switch register constraint Type.  
+  
+project:  
+  1.create skill interface.  
+
+
 # 2020.10.14  
 task progress:  
 frame:  
